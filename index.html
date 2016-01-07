@@ -29,25 +29,29 @@
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       var socket = io();
+      var nickname = "";
       $('#nickname').submit(function(){
         socket.emit('new nickname', $("#nick").val());
         return false;
       });
       $('#chatinput').submit(function(){
         socket.emit('chat message', $('#m').val());
+        $('#messages').append($('<li>').text(nickname + ": " + $('#m').val()))
         $('#m').val('');
         return false;
       });
       socket.on('chat message', function(msg){
         $('#messages').append($('<li>').text(msg));
       });
-      socket.on('user connected', function(msg){
+      socket.on('user connected', function(userName, msg){
+        nickname = userName;
         $('#messages').append($('<li>').text(msg));
       });
       socket.on('user disconnected', function(msg){
         $('#messages').append($('<li>').text(msg));
       });
-      socket.on('nickname changed', function(msg){
+      socket.on('nickname changed', function(nick, msg){
+        nickname = nick;
         $('#messages').append($('<li>').text(msg));
       });
     </script>
