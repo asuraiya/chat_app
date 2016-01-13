@@ -12,12 +12,16 @@ io.on('connection', function(socket){
     var userId = Math.floor(Math.random()*100000);
     var userName = "Guest"+userId;
     userList[userId] = userName;
-    io.emit('user connected', userList[userId], userList[userId] + " connected")
+    io.emit('user connected', userList[userId], userList[userId] + " connected", userList)
     socket.on('chat message', function(msg){
+        socket.broadcast.emit('user stopped typing');
         socket.broadcast.emit('chat message', userList[userId] + ': ' + msg);
+        clearTimeout(typingTimeout);
     });
     socket.on('disconnect', function() {
-        io.emit('user disconnected', userList[userId] + ' disconnected');
+        var userName = userList[userId];
+        delete userList[userId];
+        io.emit('user disconnected', userName + ' disconnected', userList);
     });
     socket.on('new nickname', function(nick){
         var oldNick = userList[userId];
