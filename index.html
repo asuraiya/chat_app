@@ -25,7 +25,7 @@
     </form>
     <ul id="messages"></ul>
     <div id="footer">
-      <ul id="status"></ul>
+      <div id="status"></div>
       <form id="chatinput" action="">
         <input id="m" autocomplete="off" /><button>Send</button>
       </form>
@@ -35,12 +35,8 @@
     <script>
       var socket = io();
       var nickname = "";
-      $('#m').focus(function(){
+      $('#m').keyup(function(){
         socket.emit('typing');
-        return false;
-      });
-      $('#m').focusout(function(){
-        socket.emit('stopped typing');
         return false;
       });
       $('#nickname').submit(function(){
@@ -68,10 +64,10 @@
         $('#messages').append($('<li>').text(msg));
       });
       socket.on('user typing', function(msg){
-        $('#status').append($('<li>').text(msg));
+        $('#status').html(msg);
       });
-      socket.on('user stopped typing', function(){
-        $('#status').html('');
+      socket.on('user stopped typing', function(msg){
+        $('#status').html("");
       });
     </script>
   </body>

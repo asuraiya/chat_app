@@ -2,6 +2,7 @@ var app = require('express')();
 var http = require('http').Server(app)
 var io = require('socket.io')(http);
 var userList = {};
+var typingTimeout;
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
@@ -24,10 +25,11 @@ io.on('connection', function(socket){
         io.emit('nickname changed', nick, oldNick + ' is now ' + nick);
     });
     socket.on('typing', function() {
+        clearTimeout(typingTimeout);
         socket.broadcast.emit('user typing', userList[userId] + ' is typing');
-    });
-    socket.on('stopped typing', function() {
-        socket.broadcast.emit('user stopped typing');
+        typingTimeout = setTimeout(function() {
+            socket.broadcast.emit('user stopped typing');
+        }, 3000);
     });
 });
 
