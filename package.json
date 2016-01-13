@@ -5,5 +5,24 @@
   "dependencies": {
     "express": "^4.13.3",
     "socket.io": "^1.4.4"
-  }
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asuraiya/chat_app.git"
+  },
+  "keywords": [
+    "chat",
+    "app",
+    "sockets"
+  ],
+  "author": "abhinav",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/asuraiya/chat_app/issues"
+  },
+  "homepage": "https://github.com/asuraiya/chat_app#readme"
 }
